@@ -19,7 +19,7 @@ app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
 app.use('/', indexRouter);
-app.use('/project/orderConfirm', require('./routes/project/orderConfirm') );
+app.use('/project/processOrderData', require('./routes/project/processOrderData') );
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
