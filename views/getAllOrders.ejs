@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>mLab MongoDB test</title>
+	<link rel='stylesheet' href='/stylesheets/style.css' />
+</head>
+<body>
+	<div class="container">
+		<h2>getAllOrders():</h2>
+		<ul>
+		<% orders.forEach(function(r) { %>
+			<%
+			let customer_id = r.customer_id;
+			let billing_id = r.billing_id;
+			let shipping_id = r.shipping_id;
+			let dateStr = r.date;
+			let order_total = r.order_total;
+			let product_vector = r.product_vector;
+			%>
+			<li>Customer id: <%= customer_id %></li>
+			<ul>
+				<li>Billing id: <%=billing_id %></li>
+				<li>Shipping id: <%=shipping_id %></li>
+				<li>Date: <%=dateStr %></li>
+				<li>Order total: <%=order_total %></li>
+				<li>Products:</li>
+				<ul>
+				<% product_vector.forEach( function( p ) { %>
+					<%
+					let id = p.id;
+					let quantity = p.quantity;
+					%>
+					<li>Id: <%=id %></li>
+					<ul>
+						<li>Quantity: <%=quantity %></li>
+					</ul>
+				<%}); %>
+				</ul>
+			</ul>
+			<br/>
+			<br/>
+		<% }); %>
+		</ul>
+	</div>
+</body>
+</html>

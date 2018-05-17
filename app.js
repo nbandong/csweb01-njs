@@ -20,6 +20,7 @@ app.use(express.static(path.join(__dirname, 'public')));
 
 app.use('/', indexRouter);
 app.use('/project/processOrderData', require('./routes/project/processOrderData') );
+app.use('/project/storeData', require('./routes/project/storeData') );
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
