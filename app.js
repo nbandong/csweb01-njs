@@ -21,6 +21,7 @@ app.use(express.static(path.join(__dirname, 'public')));
 app.use('/', indexRouter);
 app.use('/project/processOrderData', require('./routes/project/processOrderData') );
 app.use('/project/getAllOrders', require('./routes/project/getAllOrders') );
+app.use('/project/storeCustomerData', require('./routes/project/storeCustomerData') );
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {

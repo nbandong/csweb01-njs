@@ -11,7 +11,7 @@ async function connect()
 {
 	let url = "mongodb://" + DB_USER + ":" + DB_PASSWORD + "@" + DB_DOMAIN + "/" + DB_NAME;
 	
-	let client = await MongoClient.connect( url );
+	let client = await MongoClient.connect( url, { useNewUrlParser: true } ); // Added the useNewUrlParser option to suppress warning about it.
 	
 	return client;
 }
@@ -50,23 +50,24 @@ module.exports.getAllOrders = async function( request, response )
 	return ret;
 };
 
-// addCustomer() adds a customer to the database. Returns the customer's _id.
+// addCustomer() adds a customer to the database, or gets the customer if already present in database. Returns the customer's _id, or null on failure.
 module.exports.addCustomer = async function( info )
 {
 	/*
 		info is an associative array of the structure:
 		
 		{
-			"firstName" : string,
-			"lastName" : string,
+			"name" : string,
+			"email" : string,
 			"address" : string,
 			"address2" : string,
 			"city" : string,
 			"state" : string,
-			"zip" : string,
-			"email" : string
+			"zip" : string
 		}
 	*/
+	
+	console.log( "addCustomer() START" );
 	
 	let client = await connect();
 	let ret = null;
@@ -79,12 +80,9 @@ module.exports.addCustomer = async function( info )
 			
 			let customers = db.collection( "customers" );
 			
-			console.log( customers );
-			
 			// Check if the customer is already in the collection.
 			
 			let selectQuery = {
-				"_id": true,
 				"email": true
 			}
 			
@@ -92,18 +90,29 @@ module.exports.addCustomer = async function( info )
 				"email": info[ "email" ]
 			}
 			
-			let doc = await customers.findOne( whereQuery, selectQuery );
+			let queryResult = await customers.findOne( whereQuery, selectQuery );
 			
-			console.log( doc );
-			
-			if ( doc == null )
+			if ( queryResult == null )
 			{
-				doc = await customers.insertOne( info );
+				// Customer not found in the db, try inserting the customer in.
 				
-				console.log( doc );
+				console.log( "Customer with email " + info[ "email" ] + " not found, inserting new one." );
+				
+				let insertResult = await customers.insertOne( info ); // insertOne() returns an Object of type insertOneWriteOpResultObject.
+				
+				console.log( "Insertion result: " + insertResult.result.ok );
+				
+				if ( insertResult.result.ok == 1 )
+				{
+					// Inserted into database just fine. Return the _id.
+					ret = insertResult.insertedId;
+				}
 			}
-			
-			ret = doc[ "_id" ];
+			else
+			{
+				console.log( "Customer with email " + info[ "email" ] + " found!" );
+				ret = queryResult[ "_id" ]; // _id is always included in result of query, regardless if specified to be included or not.
+			}
 		}
 		catch ( err )
 		{
@@ -112,6 +121,8 @@ module.exports.addCustomer = async function( info )
 	}
 	
 	client.close();
+	
+	console.log( "addCustomer() END" );
 	
 	return ret;
 }

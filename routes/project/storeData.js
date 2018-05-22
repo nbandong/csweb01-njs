@@ -11,16 +11,4 @@ router.get('/', function( request, response, next )
 	})();
 });
 
-router.post('/', function( request, response, next ) 
-{
-	(async function() {
-		
-		let json = JSON.parse( response.body );
-		
-		let _id = await databaseController.addCustomer( json["checkoutInfo"]["shippingInfo"] );
-		
-		console.log( _id );
-	})();
-});
-
 module.exports = router;
