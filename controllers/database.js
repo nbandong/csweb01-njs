@@ -245,7 +245,8 @@ module.exports.storeData = async function( data )
 							"billing_id" : billingId,
 							"shipping_id" : shippingId,
 							"date" : date,
-							"orderTotal" : orderTotal
+							"orderTotal" : orderTotal,
+							"product_vector" : productList
 						};
 						
 						// Finally, insert order.
