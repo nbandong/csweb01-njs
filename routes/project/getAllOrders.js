@@ -9,6 +9,9 @@ router.get('/', function( request, response, next )
 		let orders = await databaseController.getAllOrders();
 		response.render( "getAllOrders.ejs", { orders: orders } );
 	})();
-});
+);
+
+router.post('/', function(request, response){
+    response.send("Send data information")})
 
 module.exports = router;
