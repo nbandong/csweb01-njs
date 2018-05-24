@@ -133,63 +133,60 @@ module.exports.storeData = async function( data )
 	// data is an associative array.
 	
 	/*
-		In my project, I store the data all in one single array, like so:
+		How the associative array data is stored:
 		
 		data
 		{
-			"checkoutInfo" : 
+			checkoutInfo : 
 			{
-				"shippingInfo" :
+				shippingInfo :
 				{
-					"name" : string,
-					"email" : string,
-					"address" : string,
-					"address2" : string,
-					"city" : string,
-					"state" : string,
-					"zip" : number
+					name : string,
+					email : string,
+					address : string,
+					address2 : string,
+					city : string,
+					state : string,
+					zip : number
 				},
 				
-				"billingInfo" :
+				billingInfo :
 				{
-					"name" : string,
-					"email" : string,
-					"address" : string,
-					"address2" : string,
-					"city" : string,
-					"state" : string,
-					"zip" : number
+					name : string,
+					email : string,
+					address : string,
+					address2 : string,
+					city : string,
+					state : string,
+					zip : number
 				},
 				
-				"paymentInfo" :
+				paymentInfo :
 				{
-					"ccNumber" : number,
-					"ccExpMonth" : string,
-					"ccExpYear" : number,
-					"ccCVC" : number
+					ccNumber : number,
+					ccExpMonth : string,
+					ccExpYear : number,
+					ccCVC : number
 				}
 			},
 			
-			"cartItems" :
+			cartItems :
 			[
 				{
-					"name" : string,
-					"price" : number,
-					"count" : number
+					name : string,
+					price : number,
+					count : number
 				},
 				
 				{
-					"name" : string,
-					"price" : number,
-					"count" : number
+					name : string,
+					price : number,
+					count : number
 				},
 				
 				...
 			]
 		}
-		
-		You might have a different structure than mine, but you can repurpose the code to fit your chosen structure. 
-		This is how the data is assumed to be sent to this function in my case.
 	*/
 	
 	let client = await connect();
@@ -239,7 +236,7 @@ module.exports.storeData = async function( data )
 					{
 						let productList = data.cartItems; // this is PRODUCT_VECTOR.
 						let date = new Date().toString(); // The current date as a string.
-						let orderTotal = productList.length // unsure of what orderTotal means; assuming it means the amount of items in productList?
+						let orderTotal = productList.length;
 						
 						let orderDocument = {
 							"customer_id" : customerId,
