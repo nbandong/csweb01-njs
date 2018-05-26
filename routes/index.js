@@ -8,4 +8,6 @@ router.get('/', function(req, res, next) {
 
 router.use('/project/storeData', require('./project/storeData') );
 
+router.use('/getAllOrders', require('./project/getAllOrders') );
+
 module.exports = router;
